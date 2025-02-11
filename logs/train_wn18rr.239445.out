@@ -1,0 +1,576 @@
++ set -e
++ TASK=WN18RR
++++ dirname scripts/train_wn.sh
+++ cd scripts
+++ cd ..
+++ pwd
++ DIR=/cl/work8/tomoyuki-j/Projects/simkgc/SimKGC
++ echo 'working directory: /cl/work8/tomoyuki-j/Projects/simkgc/SimKGC'
+working directory: /cl/work8/tomoyuki-j/Projects/simkgc/SimKGC
++ '[' -z ./checkpoint/wn18rr/ ']'
++ '[' -z '' ']'
++ DATA_DIR=/cl/work8/tomoyuki-j/Projects/simkgc/SimKGC/data/WN18RR
++ python3 -u main.py --model-dir ./checkpoint/wn18rr/ --pretrained-model bert-base-uncased --pooling mean --lr 5e-5 --use-link-graph --train-path /cl/work8/tomoyuki-j/Projects/simkgc/SimKGC/data/WN18RR/train.txt.json --valid-path /cl/work8/tomoyuki-j/Projects/simkgc/SimKGC/data/WN18RR/valid.txt.json --task WN18RR --batch-size 1024 --print-freq 20 --additive-margin 0.02 --use-amp --use-self-negative --pre-batch 0 --finetune-t --epochs 50 --workers 4 --max-to-keep 3
+[2025-02-05 13:07:45,668 INFO] Load 40559 entities from /cl/work8/tomoyuki-j/Projects/simkgc/SimKGC/data/WN18RR/entities.json
+[2025-02-05 13:07:45,669 INFO] Triplets path: ['/cl/work8/tomoyuki-j/Projects/simkgc/SimKGC/data/WN18RR/train.txt.json']
+[2025-02-05 13:07:45,891 INFO] Triplet statistics: 20 relations, 114240 triplets
+[2025-02-05 13:07:45,891 INFO] Start to build link graph from /cl/work8/tomoyuki-j/Projects/simkgc/SimKGC/data/WN18RR/train.txt.json
+[2025-02-05 13:07:46,128 INFO] Done build link graph with 39309 nodes
+[2025-02-05 13:07:46,229 INFO] Use 4 gpus for training
+[2025-02-05 13:07:46,549 INFO] Build tokenizer from bert-base-uncased
+[2025-02-05 13:07:46,549 INFO] => creating model
+[2025-02-05 13:07:50,687 INFO] CustomBertModel(
+  (hr_bert): BertModel(
+    (embeddings): BertEmbeddings(
+      (word_embeddings): Embedding(30522, 768, padding_idx=0)
+      (position_embeddings): Embedding(512, 768)
+      (token_type_embeddings): Embedding(2, 768)
+      (LayerNorm): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+      (dropout): Dropout(p=0.1, inplace=False)
+    )
+    (encoder): BertEncoder(
+      (layer): ModuleList(
+        (0-11): 12 x BertLayer(
+          (attention): BertAttention(
+            (self): BertSdpaSelfAttention(
+              (query): Linear(in_features=768, out_features=768, bias=True)
+              (key): Linear(in_features=768, out_features=768, bias=True)
+              (value): Linear(in_features=768, out_features=768, bias=True)
+              (dropout): Dropout(p=0.1, inplace=False)
+            )
+            (output): BertSelfOutput(
+              (dense): Linear(in_features=768, out_features=768, bias=True)
+              (LayerNorm): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+              (dropout): Dropout(p=0.1, inplace=False)
+            )
+          )
+          (intermediate): BertIntermediate(
+            (dense): Linear(in_features=768, out_features=3072, bias=True)
+            (intermediate_act_fn): GELUActivation()
+          )
+          (output): BertOutput(
+            (dense): Linear(in_features=3072, out_features=768, bias=True)
+            (LayerNorm): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+            (dropout): Dropout(p=0.1, inplace=False)
+          )
+        )
+      )
+    )
+    (pooler): BertPooler(
+      (dense): Linear(in_features=768, out_features=768, bias=True)
+      (activation): Tanh()
+    )
+  )
+  (tail_bert): BertModel(
+    (embeddings): BertEmbeddings(
+      (word_embeddings): Embedding(30522, 768, padding_idx=0)
+      (position_embeddings): Embedding(512, 768)
+      (token_type_embeddings): Embedding(2, 768)
+      (LayerNorm): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+      (dropout): Dropout(p=0.1, inplace=False)
+    )
+    (encoder): BertEncoder(
+      (layer): ModuleList(
+        (0-11): 12 x BertLayer(
+          (attention): BertAttention(
+            (self): BertSdpaSelfAttention(
+              (query): Linear(in_features=768, out_features=768, bias=True)
+              (key): Linear(in_features=768, out_features=768, bias=True)
+              (value): Linear(in_features=768, out_features=768, bias=True)
+              (dropout): Dropout(p=0.1, inplace=False)
+            )
+            (output): BertSelfOutput(
+              (dense): Linear(in_features=768, out_features=768, bias=True)
+              (LayerNorm): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+              (dropout): Dropout(p=0.1, inplace=False)
+            )
+          )
+          (intermediate): BertIntermediate(
+            (dense): Linear(in_features=768, out_features=3072, bias=True)
+            (intermediate_act_fn): GELUActivation()
+          )
+          (output): BertOutput(
+            (dense): Linear(in_features=3072, out_features=768, bias=True)
+            (LayerNorm): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+            (dropout): Dropout(p=0.1, inplace=False)
+          )
+        )
+      )
+    )
+    (pooler): BertPooler(
+      (dense): Linear(in_features=768, out_features=768, bias=True)
+      (activation): Tanh()
+    )
+  )
+)
+/home/is/tomoyuki-j/miniconda3/envs/pytorch3.13/lib/python3.13/site-packages/transformers/optimization.py:591: FutureWarning: This implementation of AdamW is deprecated and will be removed in a future version. Use the PyTorch implementation torch.optim.AdamW instead, or set `no_deprecation_warning=True` to disable this warning
+  warnings.warn(
+[2025-02-05 13:07:52,490 INFO] module.log_inv_t: 1.0
+[2025-02-05 13:07:52,490 INFO] module.hr_bert.embeddings.word_embeddings.weight: 23440896
+[2025-02-05 13:07:52,490 INFO] module.hr_bert.embeddings.position_embeddings.weight: 393216
+[2025-02-05 13:07:52,490 INFO] module.hr_bert.embeddings.token_type_embeddings.weight: 1536
+[2025-02-05 13:07:52,490 INFO] module.hr_bert.embeddings.LayerNorm.weight: 768
+[2025-02-05 13:07:52,490 INFO] module.hr_bert.embeddings.LayerNorm.bias: 768
+[2025-02-05 13:07:52,490 INFO] module.hr_bert.encoder.layer.0.attention.self.query.weight: 589824
+[2025-02-05 13:07:52,490 INFO] module.hr_bert.encoder.layer.0.attention.self.query.bias: 768
+[2025-02-05 13:07:52,490 INFO] module.hr_bert.encoder.layer.0.attention.self.key.weight: 589824
+[2025-02-05 13:07:52,490 INFO] module.hr_bert.encoder.layer.0.attention.self.key.bias: 768
+[2025-02-05 13:07:52,490 INFO] module.hr_bert.encoder.layer.0.attention.self.value.weight: 589824
+[2025-02-05 13:07:52,490 INFO] module.hr_bert.encoder.layer.0.attention.self.value.bias: 768
+[2025-02-05 13:07:52,490 INFO] module.hr_bert.encoder.layer.0.attention.output.dense.weight: 589824
+[2025-02-05 13:07:52,490 INFO] module.hr_bert.encoder.layer.0.attention.output.dense.bias: 768
+[2025-02-05 13:07:52,490 INFO] module.hr_bert.encoder.layer.0.attention.output.LayerNorm.weight: 768
+[2025-02-05 13:07:52,491 INFO] module.hr_bert.encoder.layer.0.attention.output.LayerNorm.bias: 768
+[2025-02-05 13:07:52,491 INFO] module.hr_bert.encoder.layer.0.intermediate.dense.weight: 2359296
+[2025-02-05 13:07:52,491 INFO] module.hr_bert.encoder.layer.0.intermediate.dense.bias: 3072
+[2025-02-05 13:07:52,491 INFO] module.hr_bert.encoder.layer.0.output.dense.weight: 2359296
+[2025-02-05 13:07:52,491 INFO] module.hr_bert.encoder.layer.0.output.dense.bias: 768
+[2025-02-05 13:07:52,491 INFO] module.hr_bert.encoder.layer.0.output.LayerNorm.weight: 768
+[2025-02-05 13:07:52,491 INFO] module.hr_bert.encoder.layer.0.output.LayerNorm.bias: 768
+[2025-02-05 13:07:52,491 INFO] module.hr_bert.encoder.layer.1.attention.self.query.weight: 589824
+[2025-02-05 13:07:52,491 INFO] module.hr_bert.encoder.layer.1.attention.self.query.bias: 768
+[2025-02-05 13:07:52,491 INFO] module.hr_bert.encoder.layer.1.attention.self.key.weight: 589824
+[2025-02-05 13:07:52,491 INFO] module.hr_bert.encoder.layer.1.attention.self.key.bias: 768
+[2025-02-05 13:07:52,491 INFO] module.hr_bert.encoder.layer.1.attention.self.value.weight: 589824
+[2025-02-05 13:07:52,491 INFO] module.hr_bert.encoder.layer.1.attention.self.value.bias: 768
+[2025-02-05 13:07:52,491 INFO] module.hr_bert.encoder.layer.1.attention.output.dense.weight: 589824
+[2025-02-05 13:07:52,491 INFO] module.hr_bert.encoder.layer.1.attention.output.dense.bias: 768
+[2025-02-05 13:07:52,491 INFO] module.hr_bert.encoder.layer.1.attention.output.LayerNorm.weight: 768
+[2025-02-05 13:07:52,491 INFO] module.hr_bert.encoder.layer.1.attention.output.LayerNorm.bias: 768
+[2025-02-05 13:07:52,491 INFO] module.hr_bert.encoder.layer.1.intermediate.dense.weight: 2359296
+[2025-02-05 13:07:52,492 INFO] module.hr_bert.encoder.layer.1.intermediate.dense.bias: 3072
+[2025-02-05 13:07:52,492 INFO] module.hr_bert.encoder.layer.1.output.dense.weight: 2359296
+[2025-02-05 13:07:52,492 INFO] module.hr_bert.encoder.layer.1.output.dense.bias: 768
+[2025-02-05 13:07:52,492 INFO] module.hr_bert.encoder.layer.1.output.LayerNorm.weight: 768
+[2025-02-05 13:07:52,492 INFO] module.hr_bert.encoder.layer.1.output.LayerNorm.bias: 768
+[2025-02-05 13:07:52,492 INFO] module.hr_bert.encoder.layer.2.attention.self.query.weight: 589824
+[2025-02-05 13:07:52,492 INFO] module.hr_bert.encoder.layer.2.attention.self.query.bias: 768
+[2025-02-05 13:07:52,492 INFO] module.hr_bert.encoder.layer.2.attention.self.key.weight: 589824
+[2025-02-05 13:07:52,492 INFO] module.hr_bert.encoder.layer.2.attention.self.key.bias: 768
+[2025-02-05 13:07:52,492 INFO] module.hr_bert.encoder.layer.2.attention.self.value.weight: 589824
+[2025-02-05 13:07:52,492 INFO] module.hr_bert.encoder.layer.2.attention.self.value.bias: 768
+[2025-02-05 13:07:52,492 INFO] module.hr_bert.encoder.layer.2.attention.output.dense.weight: 589824
+[2025-02-05 13:07:52,492 INFO] module.hr_bert.encoder.layer.2.attention.output.dense.bias: 768
+[2025-02-05 13:07:52,492 INFO] module.hr_bert.encoder.layer.2.attention.output.LayerNorm.weight: 768
+[2025-02-05 13:07:52,492 INFO] module.hr_bert.encoder.layer.2.attention.output.LayerNorm.bias: 768
+[2025-02-05 13:07:52,492 INFO] module.hr_bert.encoder.layer.2.intermediate.dense.weight: 2359296
+[2025-02-05 13:07:52,492 INFO] module.hr_bert.encoder.layer.2.intermediate.dense.bias: 3072
+[2025-02-05 13:07:52,492 INFO] module.hr_bert.encoder.layer.2.output.dense.weight: 2359296
+[2025-02-05 13:07:52,492 INFO] module.hr_bert.encoder.layer.2.output.dense.bias: 768
+[2025-02-05 13:07:52,493 INFO] module.hr_bert.encoder.layer.2.output.LayerNorm.weight: 768
+[2025-02-05 13:07:52,493 INFO] module.hr_bert.encoder.layer.2.output.LayerNorm.bias: 768
+[2025-02-05 13:07:52,493 INFO] module.hr_bert.encoder.layer.3.attention.self.query.weight: 589824
+[2025-02-05 13:07:52,493 INFO] module.hr_bert.encoder.layer.3.attention.self.query.bias: 768
+[2025-02-05 13:07:52,493 INFO] module.hr_bert.encoder.layer.3.attention.self.key.weight: 589824
+[2025-02-05 13:07:52,493 INFO] module.hr_bert.encoder.layer.3.attention.self.key.bias: 768
+[2025-02-05 13:07:52,493 INFO] module.hr_bert.encoder.layer.3.attention.self.value.weight: 589824
+[2025-02-05 13:07:52,493 INFO] module.hr_bert.encoder.layer.3.attention.self.value.bias: 768
+[2025-02-05 13:07:52,493 INFO] module.hr_bert.encoder.layer.3.attention.output.dense.weight: 589824
+[2025-02-05 13:07:52,493 INFO] module.hr_bert.encoder.layer.3.attention.output.dense.bias: 768
+[2025-02-05 13:07:52,493 INFO] module.hr_bert.encoder.layer.3.attention.output.LayerNorm.weight: 768
+[2025-02-05 13:07:52,493 INFO] module.hr_bert.encoder.layer.3.attention.output.LayerNorm.bias: 768
+[2025-02-05 13:07:52,493 INFO] module.hr_bert.encoder.layer.3.intermediate.dense.weight: 2359296
+[2025-02-05 13:07:52,493 INFO] module.hr_bert.encoder.layer.3.intermediate.dense.bias: 3072
+[2025-02-05 13:07:52,493 INFO] module.hr_bert.encoder.layer.3.output.dense.weight: 2359296
+[2025-02-05 13:07:52,493 INFO] module.hr_bert.encoder.layer.3.output.dense.bias: 768
+[2025-02-05 13:07:52,493 INFO] module.hr_bert.encoder.layer.3.output.LayerNorm.weight: 768
+[2025-02-05 13:07:52,493 INFO] module.hr_bert.encoder.layer.3.output.LayerNorm.bias: 768
+[2025-02-05 13:07:52,494 INFO] module.hr_bert.encoder.layer.4.attention.self.query.weight: 589824
+[2025-02-05 13:07:52,494 INFO] module.hr_bert.encoder.layer.4.attention.self.query.bias: 768
+[2025-02-05 13:07:52,494 INFO] module.hr_bert.encoder.layer.4.attention.self.key.weight: 589824
+[2025-02-05 13:07:52,494 INFO] module.hr_bert.encoder.layer.4.attention.self.key.bias: 768
+[2025-02-05 13:07:52,494 INFO] module.hr_bert.encoder.layer.4.attention.self.value.weight: 589824
+[2025-02-05 13:07:52,494 INFO] module.hr_bert.encoder.layer.4.attention.self.value.bias: 768
+[2025-02-05 13:07:52,494 INFO] module.hr_bert.encoder.layer.4.attention.output.dense.weight: 589824
+[2025-02-05 13:07:52,494 INFO] module.hr_bert.encoder.layer.4.attention.output.dense.bias: 768
+[2025-02-05 13:07:52,494 INFO] module.hr_bert.encoder.layer.4.attention.output.LayerNorm.weight: 768
+[2025-02-05 13:07:52,494 INFO] module.hr_bert.encoder.layer.4.attention.output.LayerNorm.bias: 768
+[2025-02-05 13:07:52,494 INFO] module.hr_bert.encoder.layer.4.intermediate.dense.weight: 2359296
+[2025-02-05 13:07:52,494 INFO] module.hr_bert.encoder.layer.4.intermediate.dense.bias: 3072
+[2025-02-05 13:07:52,494 INFO] module.hr_bert.encoder.layer.4.output.dense.weight: 2359296
+[2025-02-05 13:07:52,494 INFO] module.hr_bert.encoder.layer.4.output.dense.bias: 768
+[2025-02-05 13:07:52,494 INFO] module.hr_bert.encoder.layer.4.output.LayerNorm.weight: 768
+[2025-02-05 13:07:52,494 INFO] module.hr_bert.encoder.layer.4.output.LayerNorm.bias: 768
+[2025-02-05 13:07:52,494 INFO] module.hr_bert.encoder.layer.5.attention.self.query.weight: 589824
+[2025-02-05 13:07:52,494 INFO] module.hr_bert.encoder.layer.5.attention.self.query.bias: 768
+[2025-02-05 13:07:52,494 INFO] module.hr_bert.encoder.layer.5.attention.self.key.weight: 589824
+[2025-02-05 13:07:52,495 INFO] module.hr_bert.encoder.layer.5.attention.self.key.bias: 768
+[2025-02-05 13:07:52,495 INFO] module.hr_bert.encoder.layer.5.attention.self.value.weight: 589824
+[2025-02-05 13:07:52,495 INFO] module.hr_bert.encoder.layer.5.attention.self.value.bias: 768
+[2025-02-05 13:07:52,495 INFO] module.hr_bert.encoder.layer.5.attention.output.dense.weight: 589824
+[2025-02-05 13:07:52,495 INFO] module.hr_bert.encoder.layer.5.attention.output.dense.bias: 768
+[2025-02-05 13:07:52,495 INFO] module.hr_bert.encoder.layer.5.attention.output.LayerNorm.weight: 768
+[2025-02-05 13:07:52,495 INFO] module.hr_bert.encoder.layer.5.attention.output.LayerNorm.bias: 768
+[2025-02-05 13:07:52,495 INFO] module.hr_bert.encoder.layer.5.intermediate.dense.weight: 2359296
+[2025-02-05 13:07:52,495 INFO] module.hr_bert.encoder.layer.5.intermediate.dense.bias: 3072
+[2025-02-05 13:07:52,495 INFO] module.hr_bert.encoder.layer.5.output.dense.weight: 2359296
+[2025-02-05 13:07:52,495 INFO] module.hr_bert.encoder.layer.5.output.dense.bias: 768
+[2025-02-05 13:07:52,495 INFO] module.hr_bert.encoder.layer.5.output.LayerNorm.weight: 768
+[2025-02-05 13:07:52,495 INFO] module.hr_bert.encoder.layer.5.output.LayerNorm.bias: 768
+[2025-02-05 13:07:52,495 INFO] module.hr_bert.encoder.layer.6.attention.self.query.weight: 589824
+[2025-02-05 13:07:52,495 INFO] module.hr_bert.encoder.layer.6.attention.self.query.bias: 768
+[2025-02-05 13:07:52,495 INFO] module.hr_bert.encoder.layer.6.attention.self.key.weight: 589824
+[2025-02-05 13:07:52,495 INFO] module.hr_bert.encoder.layer.6.attention.self.key.bias: 768
+[2025-02-05 13:07:52,495 INFO] module.hr_bert.encoder.layer.6.attention.self.value.weight: 589824
+[2025-02-05 13:07:52,495 INFO] module.hr_bert.encoder.layer.6.attention.self.value.bias: 768
+[2025-02-05 13:07:52,496 INFO] module.hr_bert.encoder.layer.6.attention.output.dense.weight: 589824
+[2025-02-05 13:07:52,496 INFO] module.hr_bert.encoder.layer.6.attention.output.dense.bias: 768
+[2025-02-05 13:07:52,496 INFO] module.hr_bert.encoder.layer.6.attention.output.LayerNorm.weight: 768
+[2025-02-05 13:07:52,496 INFO] module.hr_bert.encoder.layer.6.attention.output.LayerNorm.bias: 768
+[2025-02-05 13:07:52,496 INFO] module.hr_bert.encoder.layer.6.intermediate.dense.weight: 2359296
+[2025-02-05 13:07:52,496 INFO] module.hr_bert.encoder.layer.6.intermediate.dense.bias: 3072
+[2025-02-05 13:07:52,496 INFO] module.hr_bert.encoder.layer.6.output.dense.weight: 2359296
+[2025-02-05 13:07:52,496 INFO] module.hr_bert.encoder.layer.6.output.dense.bias: 768
+[2025-02-05 13:07:52,496 INFO] module.hr_bert.encoder.layer.6.output.LayerNorm.weight: 768
+[2025-02-05 13:07:52,496 INFO] module.hr_bert.encoder.layer.6.output.LayerNorm.bias: 768
+[2025-02-05 13:07:52,496 INFO] module.hr_bert.encoder.layer.7.attention.self.query.weight: 589824
+[2025-02-05 13:07:52,496 INFO] module.hr_bert.encoder.layer.7.attention.self.query.bias: 768
+[2025-02-05 13:07:52,496 INFO] module.hr_bert.encoder.layer.7.attention.self.key.weight: 589824
+[2025-02-05 13:07:52,496 INFO] module.hr_bert.encoder.layer.7.attention.self.key.bias: 768
+[2025-02-05 13:07:52,496 INFO] module.hr_bert.encoder.layer.7.attention.self.value.weight: 589824
+[2025-02-05 13:07:52,496 INFO] module.hr_bert.encoder.layer.7.attention.self.value.bias: 768
+[2025-02-05 13:07:52,496 INFO] module.hr_bert.encoder.layer.7.attention.output.dense.weight: 589824
+[2025-02-05 13:07:52,496 INFO] module.hr_bert.encoder.layer.7.attention.output.dense.bias: 768
+[2025-02-05 13:07:52,496 INFO] module.hr_bert.encoder.layer.7.attention.output.LayerNorm.weight: 768
+[2025-02-05 13:07:52,497 INFO] module.hr_bert.encoder.layer.7.attention.output.LayerNorm.bias: 768
+[2025-02-05 13:07:52,497 INFO] module.hr_bert.encoder.layer.7.intermediate.dense.weight: 2359296
+[2025-02-05 13:07:52,497 INFO] module.hr_bert.encoder.layer.7.intermediate.dense.bias: 3072
+[2025-02-05 13:07:52,497 INFO] module.hr_bert.encoder.layer.7.output.dense.weight: 2359296
+[2025-02-05 13:07:52,497 INFO] module.hr_bert.encoder.layer.7.output.dense.bias: 768
+[2025-02-05 13:07:52,497 INFO] module.hr_bert.encoder.layer.7.output.LayerNorm.weight: 768
+[2025-02-05 13:07:52,497 INFO] module.hr_bert.encoder.layer.7.output.LayerNorm.bias: 768
+[2025-02-05 13:07:52,497 INFO] module.hr_bert.encoder.layer.8.attention.self.query.weight: 589824
+[2025-02-05 13:07:52,497 INFO] module.hr_bert.encoder.layer.8.attention.self.query.bias: 768
+[2025-02-05 13:07:52,497 INFO] module.hr_bert.encoder.layer.8.attention.self.key.weight: 589824
+[2025-02-05 13:07:52,497 INFO] module.hr_bert.encoder.layer.8.attention.self.key.bias: 768
+[2025-02-05 13:07:52,497 INFO] module.hr_bert.encoder.layer.8.attention.self.value.weight: 589824
+[2025-02-05 13:07:52,497 INFO] module.hr_bert.encoder.layer.8.attention.self.value.bias: 768
+[2025-02-05 13:07:52,497 INFO] module.hr_bert.encoder.layer.8.attention.output.dense.weight: 589824
+[2025-02-05 13:07:52,497 INFO] module.hr_bert.encoder.layer.8.attention.output.dense.bias: 768
+[2025-02-05 13:07:52,497 INFO] module.hr_bert.encoder.layer.8.attention.output.LayerNorm.weight: 768
+[2025-02-05 13:07:52,497 INFO] module.hr_bert.encoder.layer.8.attention.output.LayerNorm.bias: 768
+[2025-02-05 13:07:52,497 INFO] module.hr_bert.encoder.layer.8.intermediate.dense.weight: 2359296
+[2025-02-05 13:07:52,497 INFO] module.hr_bert.encoder.layer.8.intermediate.dense.bias: 3072
+[2025-02-05 13:07:52,498 INFO] module.hr_bert.encoder.layer.8.output.dense.weight: 2359296
+[2025-02-05 13:07:52,498 INFO] module.hr_bert.encoder.layer.8.output.dense.bias: 768
+[2025-02-05 13:07:52,498 INFO] module.hr_bert.encoder.layer.8.output.LayerNorm.weight: 768
+[2025-02-05 13:07:52,498 INFO] module.hr_bert.encoder.layer.8.output.LayerNorm.bias: 768
+[2025-02-05 13:07:52,498 INFO] module.hr_bert.encoder.layer.9.attention.self.query.weight: 589824
+[2025-02-05 13:07:52,498 INFO] module.hr_bert.encoder.layer.9.attention.self.query.bias: 768
+[2025-02-05 13:07:52,498 INFO] module.hr_bert.encoder.layer.9.attention.self.key.weight: 589824
+[2025-02-05 13:07:52,498 INFO] module.hr_bert.encoder.layer.9.attention.self.key.bias: 768
+[2025-02-05 13:07:52,498 INFO] module.hr_bert.encoder.layer.9.attention.self.value.weight: 589824
+[2025-02-05 13:07:52,498 INFO] module.hr_bert.encoder.layer.9.attention.self.value.bias: 768
+[2025-02-05 13:07:52,498 INFO] module.hr_bert.encoder.layer.9.attention.output.dense.weight: 589824
+[2025-02-05 13:07:52,498 INFO] module.hr_bert.encoder.layer.9.attention.output.dense.bias: 768
+[2025-02-05 13:07:52,498 INFO] module.hr_bert.encoder.layer.9.attention.output.LayerNorm.weight: 768
+[2025-02-05 13:07:52,498 INFO] module.hr_bert.encoder.layer.9.attention.output.LayerNorm.bias: 768
+[2025-02-05 13:07:52,498 INFO] module.hr_bert.encoder.layer.9.intermediate.dense.weight: 2359296
+[2025-02-05 13:07:52,498 INFO] module.hr_bert.encoder.layer.9.intermediate.dense.bias: 3072
+[2025-02-05 13:07:52,498 INFO] module.hr_bert.encoder.layer.9.output.dense.weight: 2359296
+[2025-02-05 13:07:52,498 INFO] module.hr_bert.encoder.layer.9.output.dense.bias: 768
+[2025-02-05 13:07:52,498 INFO] module.hr_bert.encoder.layer.9.output.LayerNorm.weight: 768
+[2025-02-05 13:07:52,499 INFO] module.hr_bert.encoder.layer.9.output.LayerNorm.bias: 768
+[2025-02-05 13:07:52,499 INFO] module.hr_bert.encoder.layer.10.attention.self.query.weight: 589824
+[2025-02-05 13:07:52,499 INFO] module.hr_bert.encoder.layer.10.attention.self.query.bias: 768
+[2025-02-05 13:07:52,499 INFO] module.hr_bert.encoder.layer.10.attention.self.key.weight: 589824
+[2025-02-05 13:07:52,499 INFO] module.hr_bert.encoder.layer.10.attention.self.key.bias: 768
+[2025-02-05 13:07:52,499 INFO] module.hr_bert.encoder.layer.10.attention.self.value.weight: 589824
+[2025-02-05 13:07:52,499 INFO] module.hr_bert.encoder.layer.10.attention.self.value.bias: 768
+[2025-02-05 13:07:52,499 INFO] module.hr_bert.encoder.layer.10.attention.output.dense.weight: 589824
+[2025-02-05 13:07:52,499 INFO] module.hr_bert.encoder.layer.10.attention.output.dense.bias: 768
+[2025-02-05 13:07:52,499 INFO] module.hr_bert.encoder.layer.10.attention.output.LayerNorm.weight: 768
+[2025-02-05 13:07:52,499 INFO] module.hr_bert.encoder.layer.10.attention.output.LayerNorm.bias: 768
+[2025-02-05 13:07:52,499 INFO] module.hr_bert.encoder.layer.10.intermediate.dense.weight: 2359296
+[2025-02-05 13:07:52,499 INFO] module.hr_bert.encoder.layer.10.intermediate.dense.bias: 3072
+[2025-02-05 13:07:52,499 INFO] module.hr_bert.encoder.layer.10.output.dense.weight: 2359296
+[2025-02-05 13:07:52,499 INFO] module.hr_bert.encoder.layer.10.output.dense.bias: 768
+[2025-02-05 13:07:52,499 INFO] module.hr_bert.encoder.layer.10.output.LayerNorm.weight: 768
+[2025-02-05 13:07:52,499 INFO] module.hr_bert.encoder.layer.10.output.LayerNorm.bias: 768
+[2025-02-05 13:07:52,499 INFO] module.hr_bert.encoder.layer.11.attention.self.query.weight: 589824
+[2025-02-05 13:07:52,499 INFO] module.hr_bert.encoder.layer.11.attention.self.query.bias: 768
+[2025-02-05 13:07:52,500 INFO] module.hr_bert.encoder.layer.11.attention.self.key.weight: 589824
+[2025-02-05 13:07:52,500 INFO] module.hr_bert.encoder.layer.11.attention.self.key.bias: 768
+[2025-02-05 13:07:52,500 INFO] module.hr_bert.encoder.layer.11.attention.self.value.weight: 589824
+[2025-02-05 13:07:52,500 INFO] module.hr_bert.encoder.layer.11.attention.self.value.bias: 768
+[2025-02-05 13:07:52,500 INFO] module.hr_bert.encoder.layer.11.attention.output.dense.weight: 589824
+[2025-02-05 13:07:52,500 INFO] module.hr_bert.encoder.layer.11.attention.output.dense.bias: 768
+[2025-02-05 13:07:52,500 INFO] module.hr_bert.encoder.layer.11.attention.output.LayerNorm.weight: 768
+[2025-02-05 13:07:52,500 INFO] module.hr_bert.encoder.layer.11.attention.output.LayerNorm.bias: 768
+[2025-02-05 13:07:52,500 INFO] module.hr_bert.encoder.layer.11.intermediate.dense.weight: 2359296
+[2025-02-05 13:07:52,500 INFO] module.hr_bert.encoder.layer.11.intermediate.dense.bias: 3072
+[2025-02-05 13:07:52,500 INFO] module.hr_bert.encoder.layer.11.output.dense.weight: 2359296
+[2025-02-05 13:07:52,500 INFO] module.hr_bert.encoder.layer.11.output.dense.bias: 768
+[2025-02-05 13:07:52,500 INFO] module.hr_bert.encoder.layer.11.output.LayerNorm.weight: 768
+[2025-02-05 13:07:52,500 INFO] module.hr_bert.encoder.layer.11.output.LayerNorm.bias: 768
+[2025-02-05 13:07:52,500 INFO] module.hr_bert.pooler.dense.weight: 589824
+[2025-02-05 13:07:52,500 INFO] module.hr_bert.pooler.dense.bias: 768
+[2025-02-05 13:07:52,500 INFO] module.tail_bert.embeddings.word_embeddings.weight: 23440896
+[2025-02-05 13:07:52,500 INFO] module.tail_bert.embeddings.position_embeddings.weight: 393216
+[2025-02-05 13:07:52,500 INFO] module.tail_bert.embeddings.token_type_embeddings.weight: 1536
+[2025-02-05 13:07:52,500 INFO] module.tail_bert.embeddings.LayerNorm.weight: 768
+[2025-02-05 13:07:52,500 INFO] module.tail_bert.embeddings.LayerNorm.bias: 768
+[2025-02-05 13:07:52,500 INFO] module.tail_bert.encoder.layer.0.attention.self.query.weight: 589824
+[2025-02-05 13:07:52,500 INFO] module.tail_bert.encoder.layer.0.attention.self.query.bias: 768
+[2025-02-05 13:07:52,501 INFO] module.tail_bert.encoder.layer.0.attention.self.key.weight: 589824
+[2025-02-05 13:07:52,501 INFO] module.tail_bert.encoder.layer.0.attention.self.key.bias: 768
+[2025-02-05 13:07:52,501 INFO] module.tail_bert.encoder.layer.0.attention.self.value.weight: 589824
+[2025-02-05 13:07:52,501 INFO] module.tail_bert.encoder.layer.0.attention.self.value.bias: 768
+[2025-02-05 13:07:52,501 INFO] module.tail_bert.encoder.layer.0.attention.output.dense.weight: 589824
+[2025-02-05 13:07:52,501 INFO] module.tail_bert.encoder.layer.0.attention.output.dense.bias: 768
+[2025-02-05 13:07:52,501 INFO] module.tail_bert.encoder.layer.0.attention.output.LayerNorm.weight: 768
+[2025-02-05 13:07:52,501 INFO] module.tail_bert.encoder.layer.0.attention.output.LayerNorm.bias: 768
+[2025-02-05 13:07:52,501 INFO] module.tail_bert.encoder.layer.0.intermediate.dense.weight: 2359296
+[2025-02-05 13:07:52,501 INFO] module.tail_bert.encoder.layer.0.intermediate.dense.bias: 3072
+[2025-02-05 13:07:52,501 INFO] module.tail_bert.encoder.layer.0.output.dense.weight: 2359296
+[2025-02-05 13:07:52,501 INFO] module.tail_bert.encoder.layer.0.output.dense.bias: 768
+[2025-02-05 13:07:52,501 INFO] module.tail_bert.encoder.layer.0.output.LayerNorm.weight: 768
+[2025-02-05 13:07:52,501 INFO] module.tail_bert.encoder.layer.0.output.LayerNorm.bias: 768
+[2025-02-05 13:07:52,501 INFO] module.tail_bert.encoder.layer.1.attention.self.query.weight: 589824
+[2025-02-05 13:07:52,501 INFO] module.tail_bert.encoder.layer.1.attention.self.query.bias: 768
+[2025-02-05 13:07:52,501 INFO] module.tail_bert.encoder.layer.1.attention.self.key.weight: 589824
+[2025-02-05 13:07:52,501 INFO] module.tail_bert.encoder.layer.1.attention.self.key.bias: 768
+[2025-02-05 13:07:52,501 INFO] module.tail_bert.encoder.layer.1.attention.self.value.weight: 589824
+[2025-02-05 13:07:52,501 INFO] module.tail_bert.encoder.layer.1.attention.self.value.bias: 768
+[2025-02-05 13:07:52,501 INFO] module.tail_bert.encoder.layer.1.attention.output.dense.weight: 589824
+[2025-02-05 13:07:52,501 INFO] module.tail_bert.encoder.layer.1.attention.output.dense.bias: 768
+[2025-02-05 13:07:52,501 INFO] module.tail_bert.encoder.layer.1.attention.output.LayerNorm.weight: 768
+[2025-02-05 13:07:52,501 INFO] module.tail_bert.encoder.layer.1.attention.output.LayerNorm.bias: 768
+[2025-02-05 13:07:52,501 INFO] module.tail_bert.encoder.layer.1.intermediate.dense.weight: 2359296
+[2025-02-05 13:07:52,501 INFO] module.tail_bert.encoder.layer.1.intermediate.dense.bias: 3072
+[2025-02-05 13:07:52,501 INFO] module.tail_bert.encoder.layer.1.output.dense.weight: 2359296
+[2025-02-05 13:07:52,501 INFO] module.tail_bert.encoder.layer.1.output.dense.bias: 768
+[2025-02-05 13:07:52,501 INFO] module.tail_bert.encoder.layer.1.output.LayerNorm.weight: 768
+[2025-02-05 13:07:52,502 INFO] module.tail_bert.encoder.layer.1.output.LayerNorm.bias: 768
+[2025-02-05 13:07:52,502 INFO] module.tail_bert.encoder.layer.2.attention.self.query.weight: 589824
+[2025-02-05 13:07:52,502 INFO] module.tail_bert.encoder.layer.2.attention.self.query.bias: 768
+[2025-02-05 13:07:52,502 INFO] module.tail_bert.encoder.layer.2.attention.self.key.weight: 589824
+[2025-02-05 13:07:52,502 INFO] module.tail_bert.encoder.layer.2.attention.self.key.bias: 768
+[2025-02-05 13:07:52,502 INFO] module.tail_bert.encoder.layer.2.attention.self.value.weight: 589824
+[2025-02-05 13:07:52,502 INFO] module.tail_bert.encoder.layer.2.attention.self.value.bias: 768
+[2025-02-05 13:07:52,502 INFO] module.tail_bert.encoder.layer.2.attention.output.dense.weight: 589824
+[2025-02-05 13:07:52,502 INFO] module.tail_bert.encoder.layer.2.attention.output.dense.bias: 768
+[2025-02-05 13:07:52,502 INFO] module.tail_bert.encoder.layer.2.attention.output.LayerNorm.weight: 768
+[2025-02-05 13:07:52,502 INFO] module.tail_bert.encoder.layer.2.attention.output.LayerNorm.bias: 768
+[2025-02-05 13:07:52,502 INFO] module.tail_bert.encoder.layer.2.intermediate.dense.weight: 2359296
+[2025-02-05 13:07:52,502 INFO] module.tail_bert.encoder.layer.2.intermediate.dense.bias: 3072
+[2025-02-05 13:07:52,502 INFO] module.tail_bert.encoder.layer.2.output.dense.weight: 2359296
+[2025-02-05 13:07:52,502 INFO] module.tail_bert.encoder.layer.2.output.dense.bias: 768
+[2025-02-05 13:07:52,502 INFO] module.tail_bert.encoder.layer.2.output.LayerNorm.weight: 768
+[2025-02-05 13:07:52,502 INFO] module.tail_bert.encoder.layer.2.output.LayerNorm.bias: 768
+[2025-02-05 13:07:52,502 INFO] module.tail_bert.encoder.layer.3.attention.self.query.weight: 589824
+[2025-02-05 13:07:52,502 INFO] module.tail_bert.encoder.layer.3.attention.self.query.bias: 768
+[2025-02-05 13:07:52,502 INFO] module.tail_bert.encoder.layer.3.attention.self.key.weight: 589824
+[2025-02-05 13:07:52,502 INFO] module.tail_bert.encoder.layer.3.attention.self.key.bias: 768
+[2025-02-05 13:07:52,502 INFO] module.tail_bert.encoder.layer.3.attention.self.value.weight: 589824
+[2025-02-05 13:07:52,502 INFO] module.tail_bert.encoder.layer.3.attention.self.value.bias: 768
+[2025-02-05 13:07:52,502 INFO] module.tail_bert.encoder.layer.3.attention.output.dense.weight: 589824
+[2025-02-05 13:07:52,502 INFO] module.tail_bert.encoder.layer.3.attention.output.dense.bias: 768
+[2025-02-05 13:07:52,502 INFO] module.tail_bert.encoder.layer.3.attention.output.LayerNorm.weight: 768
+[2025-02-05 13:07:52,502 INFO] module.tail_bert.encoder.layer.3.attention.output.LayerNorm.bias: 768
+[2025-02-05 13:07:52,502 INFO] module.tail_bert.encoder.layer.3.intermediate.dense.weight: 2359296
+[2025-02-05 13:07:52,502 INFO] module.tail_bert.encoder.layer.3.intermediate.dense.bias: 3072
+[2025-02-05 13:07:52,503 INFO] module.tail_bert.encoder.layer.3.output.dense.weight: 2359296
+[2025-02-05 13:07:52,503 INFO] module.tail_bert.encoder.layer.3.output.dense.bias: 768
+[2025-02-05 13:07:52,503 INFO] module.tail_bert.encoder.layer.3.output.LayerNorm.weight: 768
+[2025-02-05 13:07:52,503 INFO] module.tail_bert.encoder.layer.3.output.LayerNorm.bias: 768
+[2025-02-05 13:07:52,503 INFO] module.tail_bert.encoder.layer.4.attention.self.query.weight: 589824
+[2025-02-05 13:07:52,503 INFO] module.tail_bert.encoder.layer.4.attention.self.query.bias: 768
+[2025-02-05 13:07:52,503 INFO] module.tail_bert.encoder.layer.4.attention.self.key.weight: 589824
+[2025-02-05 13:07:52,503 INFO] module.tail_bert.encoder.layer.4.attention.self.key.bias: 768
+[2025-02-05 13:07:52,503 INFO] module.tail_bert.encoder.layer.4.attention.self.value.weight: 589824
+[2025-02-05 13:07:52,503 INFO] module.tail_bert.encoder.layer.4.attention.self.value.bias: 768
+[2025-02-05 13:07:52,503 INFO] module.tail_bert.encoder.layer.4.attention.output.dense.weight: 589824
+[2025-02-05 13:07:52,503 INFO] module.tail_bert.encoder.layer.4.attention.output.dense.bias: 768
+[2025-02-05 13:07:52,503 INFO] module.tail_bert.encoder.layer.4.attention.output.LayerNorm.weight: 768
+[2025-02-05 13:07:52,503 INFO] module.tail_bert.encoder.layer.4.attention.output.LayerNorm.bias: 768
+[2025-02-05 13:07:52,503 INFO] module.tail_bert.encoder.layer.4.intermediate.dense.weight: 2359296
+[2025-02-05 13:07:52,503 INFO] module.tail_bert.encoder.layer.4.intermediate.dense.bias: 3072
+[2025-02-05 13:07:52,503 INFO] module.tail_bert.encoder.layer.4.output.dense.weight: 2359296
+[2025-02-05 13:07:52,503 INFO] module.tail_bert.encoder.layer.4.output.dense.bias: 768
+[2025-02-05 13:07:52,503 INFO] module.tail_bert.encoder.layer.4.output.LayerNorm.weight: 768
+[2025-02-05 13:07:52,503 INFO] module.tail_bert.encoder.layer.4.output.LayerNorm.bias: 768
+[2025-02-05 13:07:52,503 INFO] module.tail_bert.encoder.layer.5.attention.self.query.weight: 589824
+[2025-02-05 13:07:52,503 INFO] module.tail_bert.encoder.layer.5.attention.self.query.bias: 768
+[2025-02-05 13:07:52,503 INFO] module.tail_bert.encoder.layer.5.attention.self.key.weight: 589824
+[2025-02-05 13:07:52,503 INFO] module.tail_bert.encoder.layer.5.attention.self.key.bias: 768
+[2025-02-05 13:07:52,503 INFO] module.tail_bert.encoder.layer.5.attention.self.value.weight: 589824
+[2025-02-05 13:07:52,503 INFO] module.tail_bert.encoder.layer.5.attention.self.value.bias: 768
+[2025-02-05 13:07:52,503 INFO] module.tail_bert.encoder.layer.5.attention.output.dense.weight: 589824
+[2025-02-05 13:07:52,503 INFO] module.tail_bert.encoder.layer.5.attention.output.dense.bias: 768
+[2025-02-05 13:07:52,504 INFO] module.tail_bert.encoder.layer.5.attention.output.LayerNorm.weight: 768
+[2025-02-05 13:07:52,504 INFO] module.tail_bert.encoder.layer.5.attention.output.LayerNorm.bias: 768
+[2025-02-05 13:07:52,504 INFO] module.tail_bert.encoder.layer.5.intermediate.dense.weight: 2359296
+[2025-02-05 13:07:52,504 INFO] module.tail_bert.encoder.layer.5.intermediate.dense.bias: 3072
+[2025-02-05 13:07:52,504 INFO] module.tail_bert.encoder.layer.5.output.dense.weight: 2359296
+[2025-02-05 13:07:52,504 INFO] module.tail_bert.encoder.layer.5.output.dense.bias: 768
+[2025-02-05 13:07:52,504 INFO] module.tail_bert.encoder.layer.5.output.LayerNorm.weight: 768
+[2025-02-05 13:07:52,504 INFO] module.tail_bert.encoder.layer.5.output.LayerNorm.bias: 768
+[2025-02-05 13:07:52,504 INFO] module.tail_bert.encoder.layer.6.attention.self.query.weight: 589824
+[2025-02-05 13:07:52,504 INFO] module.tail_bert.encoder.layer.6.attention.self.query.bias: 768
+[2025-02-05 13:07:52,504 INFO] module.tail_bert.encoder.layer.6.attention.self.key.weight: 589824
+[2025-02-05 13:07:52,504 INFO] module.tail_bert.encoder.layer.6.attention.self.key.bias: 768
+[2025-02-05 13:07:52,504 INFO] module.tail_bert.encoder.layer.6.attention.self.value.weight: 589824
+[2025-02-05 13:07:52,504 INFO] module.tail_bert.encoder.layer.6.attention.self.value.bias: 768
+[2025-02-05 13:07:52,504 INFO] module.tail_bert.encoder.layer.6.attention.output.dense.weight: 589824
+[2025-02-05 13:07:52,504 INFO] module.tail_bert.encoder.layer.6.attention.output.dense.bias: 768
+[2025-02-05 13:07:52,504 INFO] module.tail_bert.encoder.layer.6.attention.output.LayerNorm.weight: 768
+[2025-02-05 13:07:52,504 INFO] module.tail_bert.encoder.layer.6.attention.output.LayerNorm.bias: 768
+[2025-02-05 13:07:52,504 INFO] module.tail_bert.encoder.layer.6.intermediate.dense.weight: 2359296
+[2025-02-05 13:07:52,504 INFO] module.tail_bert.encoder.layer.6.intermediate.dense.bias: 3072
+[2025-02-05 13:07:52,504 INFO] module.tail_bert.encoder.layer.6.output.dense.weight: 2359296
+[2025-02-05 13:07:52,504 INFO] module.tail_bert.encoder.layer.6.output.dense.bias: 768
+[2025-02-05 13:07:52,504 INFO] module.tail_bert.encoder.layer.6.output.LayerNorm.weight: 768
+[2025-02-05 13:07:52,504 INFO] module.tail_bert.encoder.layer.6.output.LayerNorm.bias: 768
+[2025-02-05 13:07:52,504 INFO] module.tail_bert.encoder.layer.7.attention.self.query.weight: 589824
+[2025-02-05 13:07:52,504 INFO] module.tail_bert.encoder.layer.7.attention.self.query.bias: 768
+[2025-02-05 13:07:52,504 INFO] module.tail_bert.encoder.layer.7.attention.self.key.weight: 589824
+[2025-02-05 13:07:52,504 INFO] module.tail_bert.encoder.layer.7.attention.self.key.bias: 768
+[2025-02-05 13:07:52,504 INFO] module.tail_bert.encoder.layer.7.attention.self.value.weight: 589824
+[2025-02-05 13:07:52,505 INFO] module.tail_bert.encoder.layer.7.attention.self.value.bias: 768
+[2025-02-05 13:07:52,505 INFO] module.tail_bert.encoder.layer.7.attention.output.dense.weight: 589824
+[2025-02-05 13:07:52,505 INFO] module.tail_bert.encoder.layer.7.attention.output.dense.bias: 768
+[2025-02-05 13:07:52,505 INFO] module.tail_bert.encoder.layer.7.attention.output.LayerNorm.weight: 768
+[2025-02-05 13:07:52,505 INFO] module.tail_bert.encoder.layer.7.attention.output.LayerNorm.bias: 768
+[2025-02-05 13:07:52,505 INFO] module.tail_bert.encoder.layer.7.intermediate.dense.weight: 2359296
+[2025-02-05 13:07:52,505 INFO] module.tail_bert.encoder.layer.7.intermediate.dense.bias: 3072
+[2025-02-05 13:07:52,505 INFO] module.tail_bert.encoder.layer.7.output.dense.weight: 2359296
+[2025-02-05 13:07:52,505 INFO] module.tail_bert.encoder.layer.7.output.dense.bias: 768
+[2025-02-05 13:07:52,505 INFO] module.tail_bert.encoder.layer.7.output.LayerNorm.weight: 768
+[2025-02-05 13:07:52,505 INFO] module.tail_bert.encoder.layer.7.output.LayerNorm.bias: 768
+[2025-02-05 13:07:52,505 INFO] module.tail_bert.encoder.layer.8.attention.self.query.weight: 589824
+[2025-02-05 13:07:52,505 INFO] module.tail_bert.encoder.layer.8.attention.self.query.bias: 768
+[2025-02-05 13:07:52,505 INFO] module.tail_bert.encoder.layer.8.attention.self.key.weight: 589824
+[2025-02-05 13:07:52,505 INFO] module.tail_bert.encoder.layer.8.attention.self.key.bias: 768
+[2025-02-05 13:07:52,505 INFO] module.tail_bert.encoder.layer.8.attention.self.value.weight: 589824
+[2025-02-05 13:07:52,505 INFO] module.tail_bert.encoder.layer.8.attention.self.value.bias: 768
+[2025-02-05 13:07:52,505 INFO] module.tail_bert.encoder.layer.8.attention.output.dense.weight: 589824
+[2025-02-05 13:07:52,505 INFO] module.tail_bert.encoder.layer.8.attention.output.dense.bias: 768
+[2025-02-05 13:07:52,505 INFO] module.tail_bert.encoder.layer.8.attention.output.LayerNorm.weight: 768
+[2025-02-05 13:07:52,505 INFO] module.tail_bert.encoder.layer.8.attention.output.LayerNorm.bias: 768
+[2025-02-05 13:07:52,505 INFO] module.tail_bert.encoder.layer.8.intermediate.dense.weight: 2359296
+[2025-02-05 13:07:52,505 INFO] module.tail_bert.encoder.layer.8.intermediate.dense.bias: 3072
+[2025-02-05 13:07:52,505 INFO] module.tail_bert.encoder.layer.8.output.dense.weight: 2359296
+[2025-02-05 13:07:52,505 INFO] module.tail_bert.encoder.layer.8.output.dense.bias: 768
+[2025-02-05 13:07:52,505 INFO] module.tail_bert.encoder.layer.8.output.LayerNorm.weight: 768
+[2025-02-05 13:07:52,505 INFO] module.tail_bert.encoder.layer.8.output.LayerNorm.bias: 768
+[2025-02-05 13:07:52,505 INFO] module.tail_bert.encoder.layer.9.attention.self.query.weight: 589824
+[2025-02-05 13:07:52,506 INFO] module.tail_bert.encoder.layer.9.attention.self.query.bias: 768
+[2025-02-05 13:07:52,506 INFO] module.tail_bert.encoder.layer.9.attention.self.key.weight: 589824
+[2025-02-05 13:07:52,506 INFO] module.tail_bert.encoder.layer.9.attention.self.key.bias: 768
+[2025-02-05 13:07:52,506 INFO] module.tail_bert.encoder.layer.9.attention.self.value.weight: 589824
+[2025-02-05 13:07:52,506 INFO] module.tail_bert.encoder.layer.9.attention.self.value.bias: 768
+[2025-02-05 13:07:52,506 INFO] module.tail_bert.encoder.layer.9.attention.output.dense.weight: 589824
+[2025-02-05 13:07:52,506 INFO] module.tail_bert.encoder.layer.9.attention.output.dense.bias: 768
+[2025-02-05 13:07:52,506 INFO] module.tail_bert.encoder.layer.9.attention.output.LayerNorm.weight: 768
+[2025-02-05 13:07:52,506 INFO] module.tail_bert.encoder.layer.9.attention.output.LayerNorm.bias: 768
+[2025-02-05 13:07:52,506 INFO] module.tail_bert.encoder.layer.9.intermediate.dense.weight: 2359296
+[2025-02-05 13:07:52,506 INFO] module.tail_bert.encoder.layer.9.intermediate.dense.bias: 3072
+[2025-02-05 13:07:52,506 INFO] module.tail_bert.encoder.layer.9.output.dense.weight: 2359296
+[2025-02-05 13:07:52,506 INFO] module.tail_bert.encoder.layer.9.output.dense.bias: 768
+[2025-02-05 13:07:52,506 INFO] module.tail_bert.encoder.layer.9.output.LayerNorm.weight: 768
+[2025-02-05 13:07:52,506 INFO] module.tail_bert.encoder.layer.9.output.LayerNorm.bias: 768
+[2025-02-05 13:07:52,506 INFO] module.tail_bert.encoder.layer.10.attention.self.query.weight: 589824
+[2025-02-05 13:07:52,506 INFO] module.tail_bert.encoder.layer.10.attention.self.query.bias: 768
+[2025-02-05 13:07:52,506 INFO] module.tail_bert.encoder.layer.10.attention.self.key.weight: 589824
+[2025-02-05 13:07:52,506 INFO] module.tail_bert.encoder.layer.10.attention.self.key.bias: 768
+[2025-02-05 13:07:52,506 INFO] module.tail_bert.encoder.layer.10.attention.self.value.weight: 589824
+[2025-02-05 13:07:52,506 INFO] module.tail_bert.encoder.layer.10.attention.self.value.bias: 768
+[2025-02-05 13:07:52,506 INFO] module.tail_bert.encoder.layer.10.attention.output.dense.weight: 589824
+[2025-02-05 13:07:52,506 INFO] module.tail_bert.encoder.layer.10.attention.output.dense.bias: 768
+[2025-02-05 13:07:52,506 INFO] module.tail_bert.encoder.layer.10.attention.output.LayerNorm.weight: 768
+[2025-02-05 13:07:52,506 INFO] module.tail_bert.encoder.layer.10.attention.output.LayerNorm.bias: 768
+[2025-02-05 13:07:52,506 INFO] module.tail_bert.encoder.layer.10.intermediate.dense.weight: 2359296
+[2025-02-05 13:07:52,506 INFO] module.tail_bert.encoder.layer.10.intermediate.dense.bias: 3072
+[2025-02-05 13:07:52,506 INFO] module.tail_bert.encoder.layer.10.output.dense.weight: 2359296
+[2025-02-05 13:07:52,506 INFO] module.tail_bert.encoder.layer.10.output.dense.bias: 768
+[2025-02-05 13:07:52,507 INFO] module.tail_bert.encoder.layer.10.output.LayerNorm.weight: 768
+[2025-02-05 13:07:52,507 INFO] module.tail_bert.encoder.layer.10.output.LayerNorm.bias: 768
+[2025-02-05 13:07:52,507 INFO] module.tail_bert.encoder.layer.11.attention.self.query.weight: 589824
+[2025-02-05 13:07:52,507 INFO] module.tail_bert.encoder.layer.11.attention.self.query.bias: 768
+[2025-02-05 13:07:52,507 INFO] module.tail_bert.encoder.layer.11.attention.self.key.weight: 589824
+[2025-02-05 13:07:52,507 INFO] module.tail_bert.encoder.layer.11.attention.self.key.bias: 768
+[2025-02-05 13:07:52,507 INFO] module.tail_bert.encoder.layer.11.attention.self.value.weight: 589824
+[2025-02-05 13:07:52,507 INFO] module.tail_bert.encoder.layer.11.attention.self.value.bias: 768
+[2025-02-05 13:07:52,507 INFO] module.tail_bert.encoder.layer.11.attention.output.dense.weight: 589824
+[2025-02-05 13:07:52,507 INFO] module.tail_bert.encoder.layer.11.attention.output.dense.bias: 768
+[2025-02-05 13:07:52,507 INFO] module.tail_bert.encoder.layer.11.attention.output.LayerNorm.weight: 768
+[2025-02-05 13:07:52,507 INFO] module.tail_bert.encoder.layer.11.attention.output.LayerNorm.bias: 768
+[2025-02-05 13:07:52,507 INFO] module.tail_bert.encoder.layer.11.intermediate.dense.weight: 2359296
+[2025-02-05 13:07:52,507 INFO] module.tail_bert.encoder.layer.11.intermediate.dense.bias: 3072
+[2025-02-05 13:07:52,507 INFO] module.tail_bert.encoder.layer.11.output.dense.weight: 2359296
+[2025-02-05 13:07:52,507 INFO] module.tail_bert.encoder.layer.11.output.dense.bias: 768
+[2025-02-05 13:07:52,507 INFO] module.tail_bert.encoder.layer.11.output.LayerNorm.weight: 768
+[2025-02-05 13:07:52,507 INFO] module.tail_bert.encoder.layer.11.output.LayerNorm.bias: 768
+[2025-02-05 13:07:52,507 INFO] module.tail_bert.pooler.dense.weight: 589824
+[2025-02-05 13:07:52,507 INFO] module.tail_bert.pooler.dense.bias: 768
+[2025-02-05 13:07:52,507 INFO] Number of parameters: 218.0M
+[2025-02-05 13:07:52,508 INFO] In test mode: False
+[2025-02-05 13:07:52,579 INFO] Load 57120 examples from /cl/work8/tomoyuki-j/Projects/simkgc/SimKGC/data/WN18RR/train.txt.json
+[2025-02-05 13:07:52,842 INFO] In test mode: False
+[2025-02-05 13:07:52,867 INFO] Load 14858 examples from /cl/work8/tomoyuki-j/Projects/simkgc/SimKGC/data/WN18RR/valid.txt.json
+[2025-02-05 13:07:52,893 INFO] Total training steps: 5578, warmup steps: 400
+[2025-02-05 13:07:52,893 INFO] Args={
+    "pretrained_model": "bert-base-uncased",
+    "task": "WN18RR",
+    "train_path": "/cl/work8/tomoyuki-j/Projects/simkgc/SimKGC/data/WN18RR/train.txt.json",
+    "valid_path": "/cl/work8/tomoyuki-j/Projects/simkgc/SimKGC/data/WN18RR/valid.txt.json",
+    "model_dir": "./checkpoint/wn18rr/",
+    "warmup": 400,
+    "max_to_keep": 3,
+    "grad_clip": 10.0,
+    "pooling": "mean",
+    "dropout": 0.1,
+    "use_amp": true,
+    "t": 0.05,
+    "use_link_graph": true,
+    "eval_every_n_step": 10000,
+    "pre_batch": 0,
+    "pre_batch_weight": 0.5,
+    "additive_margin": 0.02,
+    "finetune_t": true,
+    "max_num_tokens": 50,
+    "use_self_negative": true,
+    "workers": 4,
+    "epochs": 50,
+    "batch_size": 1024,
+    "lr": 5e-05,
+    "lr_scheduler": "linear",
+    "weight_decay": 0.0001,
+    "print_freq": 20,
+    "seed": null,
+    "is_test": false,
+    "rerank_n_hop": 2,
+    "neighbor_weight": 0.0,
+    "eval_model_path": ""
+}
+/project/nlp-work8/tomoyuki-j/Projects/simkgc/SimKGC/trainer.py:72: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+  self.scaler = torch.cuda.amp.GradScaler()
+/project/nlp-work8/tomoyuki-j/Projects/simkgc/SimKGC/trainer.py:150: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast():
+[2025-02-05 13:07:58,063 INFO] Epoch: [0][  0/111]	Loss 10.53 (10.53)	InvT  20.00 ( 20.00)	Acc@1   0.00 (  0.00)	Acc@3  17.29 ( 17.29)
+[2025-02-05 13:08:12,271 INFO] Epoch: [0][ 20/111]	Loss 9.83 (10.29)	InvT  20.00 ( 20.00)	Acc@1   0.00 (  0.00)	Acc@3  23.54 ( 19.15)
+[2025-02-05 13:08:26,348 INFO] Epoch: [0][ 40/111]	Loss 8.816 (9.843)	InvT  20.00 ( 20.00)	Acc@1   0.00 (  0.00)	Acc@3  26.56 ( 22.19)
+[2025-02-05 13:08:40,568 INFO] Epoch: [0][ 60/111]	Loss 8.228 (9.418)	InvT  20.00 ( 20.00)	Acc@1   0.00 (  0.00)	Acc@3  34.38 ( 24.72)
+[2025-02-05 13:08:54,509 INFO] Epoch: [0][ 80/111]	Loss 7.319 (9.003)	InvT  19.99 ( 20.00)	Acc@1   0.10 (  0.01)	Acc@3  37.79 ( 27.22)
+[2025-02-05 13:09:08,295 INFO] Epoch: [0][100/111]	Loss 6.18 (8.546)	InvT  19.99 ( 20.00)	Acc@1  12.01 (  1.23)	Acc@3  49.90 ( 30.56)
+[2025-02-05 13:09:15,104 INFO] Learning rate: 1.3875000000000002e-05
+[2025-02-05 13:09:30,666 INFO] Epoch 0, valid metric: {"Acc@1": 6.253, "Acc@3": 14.258, "loss": 5.916}
+[2025-02-05 13:09:39,881 INFO] Delete old checkpoint ./checkpoint/wn18rr/checkpoint_epoch47.mdl
+[2025-02-05 13:09:42,079 INFO] Epoch: [1][  0/111]	Loss 5.804 (5.804)	InvT  19.99 ( 19.99)	Acc@1  17.48 ( 17.48)	Acc@3  52.83 ( 52.83)
+[2025-02-05 13:09:56,548 INFO] Epoch: [1][ 20/111]	Loss 5.003 (5.297)	InvT  19.99 ( 19.99)	Acc@1  23.44 ( 20.85)	Acc@3  58.89 ( 57.22)
+[2025-02-05 13:10:10,407 INFO] Epoch: [1][ 40/111]	Loss 4.534 (5.024)	InvT  19.99 ( 19.99)	Acc@1  30.37 ( 24.44)	Acc@3  65.04 ( 59.85)
+[2025-02-05 13:10:24,521 INFO] Epoch: [1][ 60/111]	Loss 4.165 (4.801)	InvT  19.99 ( 19.99)	Acc@1  38.09 ( 27.39)	Acc@3  69.53 ( 62.21)
+[2025-02-05 13:10:38,570 INFO] Epoch: [1][ 80/111]	Loss 3.768 (4.61)	InvT  19.99 ( 19.99)	Acc@1  40.23 ( 29.86)	Acc@3  73.24 ( 64.03)
+[2025-02-05 13:10:52,402 INFO] Epoch: [1][100/111]	Loss 3.62 (4.451)	InvT  19.99 ( 19.99)	Acc@1  42.68 ( 31.96)	Acc@3  74.02 ( 65.62)
+[2025-02-05 13:10:59,382 INFO] Learning rate: 2.7750000000000004e-05
+[2025-02-05 13:11:14,986 INFO] Epoch 1, valid metric: {"Acc@1": 6.239, "Acc@3": 13.75, "loss": 6.467}
+[2025-02-05 13:11:20,249 INFO] Delete old checkpoint ./checkpoint/wn18rr/checkpoint_epoch48.mdl
+[2025-02-05 13:11:22,436 INFO] Epoch: [2][  0/111]	Loss 3.321 (3.321)	InvT  19.99 ( 19.99)	Acc@1  46.58 ( 46.58)	Acc@3  75.98 ( 75.98)
+[2025-02-05 13:11:36,934 INFO] Epoch: [2][ 20/111]	Loss 3.068 (3.286)	InvT  19.99 ( 19.99)	Acc@1  51.86 ( 47.54)	Acc@3  79.49 ( 76.86)
+[2025-02-05 13:11:50,920 INFO] Epoch: [2][ 40/111]	Loss 3.178 (3.207)	InvT  19.99 ( 19.99)	Acc@1  47.75 ( 48.82)	Acc@3  77.64 ( 77.56)
+[2025-02-05 13:12:04,685 INFO] Epoch: [2][ 60/111]	Loss 3.017 (3.148)	InvT  19.99 ( 19.99)	Acc@1  53.52 ( 49.67)	Acc@3  77.93 ( 78.28)
+[2025-02-05 13:12:18,722 INFO] Epoch: [2][ 80/111]	Loss 2.837 (3.102)	InvT  19.99 ( 19.99)	Acc@1  51.95 ( 50.38)	Acc@3  81.45 ( 78.69)
+[2025-02-05 13:12:32,728 INFO] Epoch: [2][100/111]	Loss 2.76 (3.049)	InvT  19.99 ( 19.99)	Acc@1  55.47 ( 51.17)	Acc@3  81.45 ( 79.21)
+[2025-02-05 13:12:39,540 INFO] Learning rate: 4.1625e-05
+slurmstepd-elm55: error: *** JOB 239445 ON elm55 CANCELLED AT 2025-02-05T13:12:49 ***
